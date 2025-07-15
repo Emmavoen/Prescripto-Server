@@ -65,7 +65,9 @@ export const addDoctor = async (req, res) => {
       address: JSON.parse(address),
       date: Date.now(),
     });
-    res.status(201).json({ message: "Doctor added successfully" });
+    res
+      .status(201)
+      .json({ success: true, message: "Doctor added successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: error.message });
@@ -85,12 +87,22 @@ export const adminLogin = async (req, res) => {
       password === process.env.ADMIN_PASSWORD
     ) {
       const token = jwt.sign(email + password, process.env.JWT_SECRET);
-      return res.status(200).json({ token });
+      return res.status(200).json({ success: true, token });
     } else {
       return res.status(401).json({ message: "Invalid credentials" });
     }
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: error.message });
+  }
+};
+
+export const allDoctors = async (req, res) => {
+  try {
+    const doctors = await Doctor.find({}).select("-password");
+    res.status(200).json({ success: true, doctors });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: error.message });
   }
 };
