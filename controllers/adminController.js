@@ -5,6 +5,7 @@ import { v2 as cloudinary } from "cloudinary";
 import Doctor from "../models/doctorsModel.js";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
+import appointmentModel from "../models/appointmentModel.js";
 export const addDoctor = async (req, res) => {
   try {
     const {
@@ -101,6 +102,16 @@ export const allDoctors = async (req, res) => {
   try {
     const doctors = await Doctor.find({}).select("-password");
     res.status(200).json({ success: true, doctors });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const appointmentsAdmin = async (req, res) => {
+  try {
+    const appointments = await appointmentModel.find({});
+    res.status(200).json({ success: true, appointments });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: error.message });

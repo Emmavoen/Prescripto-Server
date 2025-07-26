@@ -130,7 +130,7 @@ export const bookAppointment = async (req, res) => {
     const docData = await doctorModel.findById(docId).select("-password");
     if (!docData.available) {
       return res
-        .status(400)
+        .status(200)
         .json({ success: false, message: "Doctor is not available" });
     }
     let slots_booked = docData.slots_booked;
